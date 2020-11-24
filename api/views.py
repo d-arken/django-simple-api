@@ -1,9 +1,11 @@
+from api.models import UserProfile
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 
 from api import serializers
+from api import models
 # Create your views here.
 
 class User(APIView):
@@ -65,3 +67,7 @@ class UserViewSet(viewsets.ViewSet):
 
     def destroy(self, request, pj=None):
         return Response({'method': 'delete'})
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
