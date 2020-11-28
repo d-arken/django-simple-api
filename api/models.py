@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+from django.conf import settings
 
+# Create your models here.
 class UserProfileManager(BaseUserManager):
     def create_user(self, email, name, password=None):
         if not email:
@@ -25,8 +27,6 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-
-# Create your models here.
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
     name = models.CharField(max_length=254)
@@ -46,3 +46,15 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class ProfileFeedItem(models.Model):
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete = models.CASCADE,
+    )
+    
+    status_text = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.status_text
